@@ -27,9 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install uv
-      uses: astral-sh/setup-uv@v4
-      with:
-        version: "latest"
+        uses: astral-sh/setup-uv@v7
     - name: Set up Python
       run: uv python install
     - name: Install dependencies
@@ -60,9 +58,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install uv
-      uses: astral-sh/setup-uv@v4
-      with:
-        version: "latest"
+        uses: astral-sh/setup-uv@v7
     - name: Set up Python
       run: uv python install
     - name: Install dependencies
@@ -95,9 +91,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: Install uv
-      uses: astral-sh/setup-uv@v4
-      with:
-        version: "latest"
+        uses: astral-sh/setup-uv@v7
     - name: Set up Python
       run: uv python install
     - name: Install dependencies
