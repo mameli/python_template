@@ -1,0 +1,30 @@
+default_install_hook_types: [pre-commit, prepare-commit-msg, commit-msg]
+repos:
+- repo: https://github.com/commitizen-tools/commitizen
+  rev: v4.1.0
+  hooks:
+    - id: commitizen
+      stages: [commit-msg]
+- repo: local
+  hooks:
+    - id: ruff-format
+      name: ruff-format
+      entry: uv run --quiet ruff format
+      language: system
+      types_or: [python, pyi, jupyter]
+      require_serial: true
+      stages: [pre-commit, pre-merge-commit, pre-push, manual]
+    - id: ruff-lint
+      name: ruff-lint
+      entry: uv run --quiet ruff check --fix
+      language: system
+      types_or: [python, pyi, jupyter]
+      require_serial: true
+      stages: [pre-commit, pre-merge-commit, pre-push, manual]
+    - id: type-check
+      name: type-check
+      entry: uv run ty check
+      language: system
+      types_or: [python, pyi, jupyter]
+      require_serial: true
+      stages: [pre-commit, pre-merge-commit, pre-push, manual]

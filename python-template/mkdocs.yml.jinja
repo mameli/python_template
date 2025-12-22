@@ -1,0 +1,117 @@
+site_name: "{{project_slug}}"
+site_url: 'https://{{ github_username }}.github.io/{{project_slug}}/'  # Trailing slash is recommended
+repo_url: "https://github.com/{{ github_username }}/{{project_slug}}"
+
+theme:
+  name: "material"
+  custom_dir: "docs/.overrides"
+  features:
+  - announce.dismiss
+  - content.action.edit
+  - content.action.view
+  - content.code.annotate
+  - content.code.copy
+  - content.tooltips
+  - navigation.footer
+  - navigation.indexes
+  - navigation.sections
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.top
+  - search.highlight
+  - search.suggest
+  - toc.follow
+  palette:
+  - media: "(prefers-color-scheme)"
+    toggle:
+      icon: material/brightness-auto
+      name: Switch to light mode
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: teal
+    accent: purple
+    toggle:
+      icon: material/weather-sunny
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: black
+    accent: lime
+    toggle:
+      icon: material/weather-night
+      name: Switch to system preference
+
+extra_css:
+- css/style.css
+- css/material.css
+- css/mkdocstrings.css
+- css/insiders.css
+
+markdown_extensions:
+- attr_list
+- admonition
+- footnotes
+- pymdownx.details
+- pymdownx.emoji:
+    emoji_index: !!python/name:material.extensions.emoji.twemoji
+    emoji_generator: !!python/name:material.extensions.emoji.to_svg
+- pymdownx.highlight:
+    pygments_lang_class: true
+- pymdownx.magiclink
+- pymdownx.snippets:
+    base_path: [!relative $config_dir]
+    check_paths: true
+- pymdownx.superfences
+- pymdownx.tabbed:
+    alternate_style: true
+    slugify: !!python/object/apply:pymdownx.slugs.slugify
+      kwds:
+        case: lower
+- pymdownx.tasklist:
+    custom_checkbox: true
+- pymdownx.tilde
+- toc:
+    permalink: "¤"
+
+nav:
+- Home:
+  - Overview: index.md
+  - Documentation: docs.md
+  - Changelog: changelog.md
+- Code Reference: reference/ # defer to gen-files + literate-nav
+
+plugins:
+- autorefs
+- gen-files:
+    scripts:
+      - scripts/mkdocs/gen_ref_pages.py
+- literate-nav:
+    nav_file: SUMMARY.md
+- mkdocstrings:
+    handlers:
+      python:
+        paths: [src, tests]
+        options:
+          docstring_options:
+            ignore_init_summary: true
+          docstring_section_style: list
+          filters: ["!^_"]
+          heading_level: 1
+          inherited_members: true
+          merge_init_into_class: true
+          parameter_headings: true
+          separate_signature: true
+          show_root_heading: true
+          show_root_full_path: false
+          show_signature_annotations: true
+          show_source: false
+          show_symbol_type_heading: true
+          show_symbol_type_toc: true
+          signature_crossrefs: true
+          summary: true
+- section-index
+- search
+
+extra:
+  version:
+    provider: mike

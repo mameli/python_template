@@ -1,0 +1,11 @@
+import unittest
+from {{project_slug_underscore}}.example import hello
+
+
+class Test{{project_slug_underscore}}(unittest.TestCase):
+    def test_hello(self):
+        assert hello("Giulio") == "Hello Giulio!"
+
+
+if __name__ == "__main__":
+    unittest.main()

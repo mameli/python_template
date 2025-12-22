@@ -1,0 +1,62 @@
+package_name:
+    type: str
+    placeholder: YOUR-PROJECT-NAME
+    help: Name of the Python package.
+
+project_slug:
+    type: str
+    default: "{{ package_name.lower().replace(' ', '_').replace('_','-') }}"
+    when: false
+
+project_slug_underscore:
+    type: str
+    default: "{{ project_slug.replace('-','_') }}"
+    when: false
+
+project_description:
+    type: str
+    help: Description of the project.
+    default: "A python project"
+
+github_username:
+    type: str
+    help: GitHub username or organization name.
+
+services_support:
+    type: str
+    help: Additional specific services for which you want support. For every service selected, the relative directories structure, build script and Jenkins step will be created. (e.g. select "lambda" if you need to create zip packages for AWS Lambda functions).
+    multiselect: true
+    choices:
+        - docker
+        - lambda
+
+_subdirectory: python-template
+
+_message_after_copy: |
+    Your project "{{ project_slug }}" has been created successfully!
+
+    1. Initialize the local directory as a Git repository, setup local environment, add files to version control and commit them:
+
+        git init --initial-branch=master
+        make install
+        git add .
+        git commit -m "feat: first commit"
+
+    2. Copy the URL of your GitHub repository and run:
+
+        git remote add origin https://github.com/{{ github_username }}/{{ project_slug }}.git
+
+    3. You can verify your new remote URL running:
+
+        git remote -v
+
+    4. Now you can push your local files to GitHub.
+
+        git push --set-upstream origin master
+
+_message_after_update: |
+    Your project "{{ project_slug }}" has been updated successfully!
+    In case there are any conflicts, please resolve them. Then,
+    you're done.
+
+_min_copier_version: "9.0.0"

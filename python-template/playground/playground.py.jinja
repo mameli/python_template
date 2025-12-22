@@ -1,0 +1,106 @@
+import marimo
+
+__generated_with = "0.14.10"
+app = marimo.App(width="wide")
+
+
+@app.cell
+def _():
+    import marimo as mo
+
+    return (mo,)
+
+
+@app.cell
+def _(mo):
+    mo.md(
+        """
+    # 🐚 Marimo Playground
+    Reactive notebook stored in a single `.py` file
+    """
+    )
+    return
+
+
+@app.cell
+def _():
+    import sys
+    from pathlib import Path
+
+    sys.path.append(str(Path(__file__).resolve().parent.parent / "src"))
+    return
+
+
+@app.cell
+def _():
+    from {{project_slug_underscore}}.example import hello
+
+    return (hello,)
+
+
+@app.cell
+def _(hello):
+    hello("Playground")
+    return
+
+
+@app.cell
+def _():
+    import random
+    import polars as pl
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    random.seed(0)  # reproducible results
+    plt.rcParams["figure.figsize"] = (6, 3)
+    return pl, plt, random, sns
+
+
+@app.cell
+def _(mo):
+    n_samples = mo.ui.slider(100, 5000, step=100, value=1000, label="Samples")
+    mu = mo.ui.number(value=0.0, label="Mean")
+    sigma = mo.ui.slider(0.1, 5.0, step=0.1, value=1.0, label="Std dev")
+
+    mo.hstack([n_samples, mu, sigma])
+    return mu, n_samples, sigma
+
+
+@app.cell
+def _(mu, n_samples, pl, random, sigma):
+    data = [random.gauss(mu.value, sigma.value) for _ in range(n_samples.value)]
+    df = pl.DataFrame({"value": data})
+    return (df,)
+
+
+@app.cell
+def _(df):
+    df.head()
+    return
+
+
+@app.cell
+def _(df, plt, sns):
+    _, ax = plt.subplots()
+    sns.histplot(df["value"].to_list(), bins=30, ax=ax)
+    ax.set_title("Generated distribution")
+    ax.set_xlabel("x")
+    ax.set_ylabel("count")
+    return
+
+
+@app.cell
+def _(df):
+    print("Mean", f"{df['value'].mean():.2f}")
+    print("Std dev", f"{df['value'].std():.2f}")
+    print("Rows", f"{df.height:,}")
+    return
+
+
+@app.cell
+def _():
+    return
+
+
+if __name__ == "__main__":
+    app.run()

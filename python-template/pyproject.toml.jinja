@@ -1,0 +1,73 @@
+[project]
+name = "{{project_slug}}"
+description = "{{project_description}}"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.13"
+dependencies = []
+version = "0.0.0"
+
+[dependency-groups]
+dev = [
+    "commitizen==v4.8.3",
+    "importlib-metadata==8.5.0",
+    "mike==2.1.3",
+    "mkdocs-autorefs==1.2.0",
+    "mkdocs-gen-files==0.5.0",
+    "mkdocs-literate-nav==0.6.1",
+    "mkdocs-material==9.5.46",
+    "mkdocs-section-index==0.3.9",
+    "mkdocstrings[python]==0.27.0",
+    "pre-commit==4.0.1",
+    "pymdown-extensions==10.12",
+    "pytest-cov==5.0.0",
+    "pytest==8.3.3",
+    "ruff==0.7.0",
+    "typing-extensions==4.12.2",
+    "marimo>=0.11.0",
+    "polars>=1.18.0",
+    "seaborn>=0.13.2",
+    "ty>=0.0.2",
+]
+
+[tool.uv]
+required-version = ">=0.8.0"
+native-tls = true # Use the system TLS library
+
+[build-system]
+requires = ["uv_build>=0.8.11,<0.9.0"]
+build-backend = "uv_build"
+
+{% if 'lambda' in services_support -%}
+[tool.uv.workspace]
+members = [
+  "lambdas/*",
+]
+exclude = [
+  "**/__pycache__",
+]
+{%- endif %}
+
+[project.urls]
+"Homepage" = "https://github.com/{{github_username}}/{{project_slug}}"
+"Source" = "https://github.com/{{github_username}}/{{project_slug}}"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--cov=src/",
+    "--cov=lambdas/",
+    "--cov-report=xml",
+    "--cov-report=term-missing",
+    "--junitxml=report.xml",
+]
+# https://stackoverflow.com/a/50610630
+pythonpath = [
+  ".",
+  "src"
+]
+
+[tool.ruff]
+respect-gitignore = true
+
+[tool.commitizen]
+version_provider = "uv"

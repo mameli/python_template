@@ -1,0 +1,81 @@
+# {{project_slug}}
+
+[![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+
+## Quickstart
+
+### 1. Install `uv`
+
+This project uses [uv](https://github.com/astral-sh/uv) as package manager.
+Installation instructions are [here](https://docs.astral.sh/uv/getting-started/installation/).
+It's recommended to install the latest version from [github releases](https://github.com/astral-sh/uv/releases).
+
+
+Linux/MacOS (bash):
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Windows (powershell):
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+If you have already installed `uv`, please ensure you're using the latest version by running `uv self update`.
+
+### 2. Clone repository
+
+```bash
+git clone https://github.com/{{ github_username }}/{{project_slug}}
+cd {{project_slug}}
+```
+
+
+### 4. Run initial setup
+   ```bash
+   make install
+   ```
+
+Congratulations! You're now ready to use your new project :sparkles:
+
+## Documentation
+
+The project documentation is generated automatically by parsing the source code, provided that the code is properly commented with appropriate docstrings.
+
+To initialize and build the documentation, run:
+```bash
+make init-docs
+```
+
+To publish the generated documentation to GitHub Pages, run:
+```bash
+make github-pages
+```
+
+After publishing, the documentation will be available at `https://{{ github_username }}.github.io/{{project_slug}}/`.
+
+## Makefile commands
+
+- `build` — Runs `scripts/build.sh` to build the project.
+- `install` — Runs `sync` and installs pre-commit hooks.
+- `lint` — Runs `scripts/lint.sh` to lint the code with [ruff](https://github.com/astral-sh/ruff).
+- `init-docs` — Runs `scripts/init-docs.sh` to initialize documentation branch.
+- `github-pages` — Runs `scripts/github-pages.sh` to publish documentation to GitHub Pages.
+- `github-tag` — Runs `scripts/github-tag.sh` to create a GitHub tag.
+- `print-version` — Runs `scripts/print-version.sh` to print the current version.
+- `sync` — Runs `scripts/sync.sh` to synchronize dependencies.
+- `tests` — Runs `scripts/tests.sh` to execute tests.
+- `type-check` — Runs `scripts/type-check.sh` to perform type checking with [ty](https://github.com/astral-sh/ty).
+- `lambdas-build` — Runs `scripts/lambdas-build.sh` to build lambdas.
+- `docker-build` — Runs `scripts/docker-build.sh` to build the Docker image.
+
+## Marimo playground
+
+The Marimo notebook can be run locally using the following command:
+
+```bash
+uv run marimo edit
+```
+
+This opens the Marimo editor for interactive notebook development.

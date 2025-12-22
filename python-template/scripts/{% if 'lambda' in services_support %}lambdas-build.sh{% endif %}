@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+
+set -ex
+
+BASE_DIR=$(pwd)
+TARGET_DIR="$BASE_DIR"/dist
+VERSION=$(make --silent print-version 2>/dev/null)
+echo "OK ($VERSION)"
+
+rm -rf "$TARGET_DIR"
+
+# create local target
+if [ ! -d "$TARGET_DIR" ]; then
+    mkdir -p "$TARGET_DIR"
+fi
+
+TARGET_DIR_LAMBDAS="$TARGET_DIR"/"$VERSION"
+MAX_SIZE_MB=250
+LAMBDA_PY_VERSION="${LAMBDA_PY_VERSION:-3.13}"
+
+# Common grep pattern for files we don't want in the final artefact
+CLEAN_PATTERN='(__pycache__|\.pyc$|\.pyo$|tests|boto3|botocore|s3transfer|jmespath)'
+
+# -------------------------------------------------------------------
+# Helper: install project dependencies into a given directory
+# -------------------------------------------------------------------
+install_deps() {
+  local project_dir=$1
+  local target_dir=$2
+  local py_ver=${LAMBDA_PY_VERSION:-3.13}
+  uv export \
+    --directory "${project_dir}" \
+    --no-dev \
+    --no-editable \
+  | uv pip install \
+    --no-installer-metadata \
+    --no-compile-bytecode \
+    --python-platform x86_64-manylinux2014 \
+    --python-version "${py_ver}" \
+    --target "${target_dir}" \
+    -r -
+}
+
+# -------------------------------------------------------------------
+# Helper: strip caches, tests and AWS SDK duplicates from a directory
+# -------------------------------------------------------------------
+clean_directory() {
+  local dir=$1
+  (
+    cd "${dir}" || exit
+    find . | grep -E "${CLEAN_PATTERN}" | xargs rm -rf
+  )
+}
+
+function packageLambdas() {
+  lambdasDir=$1
+  for lambdaDir in "${lambdasDir}"*/; do
+    lambdaName=$(basename "$lambdaDir")
+    tempDir=$TARGET_DIR_LAMBDAS/.tmp/$lambdaName
+    tempDirLayer=$TARGET_DIR_LAMBDAS/.tmp/python
+
+    cd "$lambdaDir" || exit
+
+    echo 'Packaging Lambda function' "$lambdaName"
+    # Remove old temp data
+    if [ -d ../.tmp ]; then rm -rf ../.tmp; fi
+
+    # Create temp dir
+    mkdir -p "$tempDir"
+
+    # Move all sources in temp dir
+    find . \( -name '*.py' -o -name '*.json' \) -exec cp -P {} "$tempDir" \;
+
+    ls -lahrt "$tempDir"
+
+    # Check if a Lambda layer needs to be created
+    create_layer=$(grep -E '^[[:space:]]*create_layer[[:space:]]*=' pyproject.toml \
+      | head -n1 \
+      | awk -F '=' '{print tolower($2)}' \
+      | tr -d '[:space:]\"')
+    if [[ "$create_layer" == "true" ]]; then
+      # Bundle the application dependencies in a Lambda layer
+      # https://docs.astral.sh/uv/guides/integration/aws-lambda/#using-a-lambda-layer
+      mkdir -p "$tempDirLayer"
+      install_deps "$lambdaDir" "$tempDirLayer"
+
+      ls -lahrt "$tempDirLayer"
+
+      # Remove caches, tests and AWS SDK already present in the runtime
+      clean_directory "$tempDirLayer"
+
+      # Package lambda layer
+      echo 'Packaging Lambda layer' "$lambdaName"
+      cd $tempDirLayer
+      cd .. # Directory with the Lambda layer dependencies in the "python" subdirectory
+
+      # Check layer package size
+      DIR_SIZE_MB=$(du -sm "python" | cut -f1)
+      if (( DIR_SIZE_MB > MAX_SIZE_MB )); then
+        echo "❌ Error: Layer size is ${DIR_SIZE_MB}MB, which exceeds the ${MAX_SIZE_MB}MB Lambda limit. Please, bundle the Lambda package in a Docker image."
+        exit 1
+      fi
+
+      zip --quiet -r -X "${lambdaName}_layer_${VERSION}".zip python
+      mv ./*.zip "$TARGET_DIR"
+      cd "$lambdaDir" || exit
+    else
+      # Bundle the application dependencies with the Lambda code
+      # https://docs.astral.sh/uv/guides/integration/aws-lambda/#deploying-a-zip-archive
+      install_deps "$lambdaDir" "$tempDir"
+
+      ls -lahrt "$tempDir"
+    fi
+
+    # Package lambda (with dependencies if create_layer is false)
+    clean_directory "$tempDir"
+
+    # Check lambda package size
+    DIR_SIZE_MB=$(du -sm "$tempDir" | cut -f1)
+    if (( DIR_SIZE_MB > MAX_SIZE_MB )); then
+      echo "❌ Error: Lambda package is ${DIR_SIZE_MB}MB, which exceeds the ${MAX_SIZE_MB}MB Lambda limit. Please, bundle the Lambda package in a Docker image."
+      exit 1
+    fi
+
+    cd $tempDir # Directory with the Lambda code and dependencies
+
+    zip --quiet -r "${lambdaName}_${VERSION}".zip .
+    mv ./*.zip "$TARGET_DIR"
+    cd "$BASE_DIR" || exit
+    rm -rf "${TARGET_DIR_LAMBDAS}"
+  done
+}
+
+packageLambdas "$BASE_DIR/lambdas/"

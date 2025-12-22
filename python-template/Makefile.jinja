@@ -1,0 +1,46 @@
+.PHONY: *
+
+# ==================================================================
+# careful, lines from here on must be indented with TABS, not SPACES
+build: chmod
+	@./scripts/build.sh
+
+chmod:
+	@chmod +x ./scripts/*.sh
+
+install: sync
+	uv run pre-commit install
+
+lint: chmod
+	@./scripts/lint.sh
+
+init-docs: sync
+	@./scripts/init-docs.sh
+
+github-pages: chmod
+	@./scripts/github-pages.sh
+
+github-tag: chmod
+	@./scripts/github-tag.sh
+
+print-version: chmod
+	@./scripts/print-version.sh
+
+sync: chmod
+	@./scripts/sync.sh
+
+tests: chmod
+	@./scripts/tests.sh
+
+type-check: chmod
+	@./scripts/type-check.sh
+
+{% if 'lambda' in services_support %}
+lambdas-build: chmod
+	@./scripts/lambdas-build.sh
+{% endif %}
+
+{% if 'docker' in services_support %}
+docker-build: chmod
+	@./scripts/docker-build.sh
+{% endif %}
