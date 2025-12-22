@@ -35,12 +35,5 @@ tests: chmod
 type-check: chmod
 	@./scripts/type-check.sh
 
-{% if 'lambda' in services_support %}
-lambdas-build: chmod
-	@./scripts/lambdas-build.sh
-{% endif %}
-
-{% if 'docker' in services_support %}
 docker-build: chmod
 	@./scripts/docker-build.sh
-{% endif %}

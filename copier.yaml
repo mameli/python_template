@@ -22,14 +22,6 @@ github_username:
     type: str
     help: GitHub username or organization name.
 
-services_support:
-    type: str
-    help: Additional specific services for which you want support. For every service selected, the relative directories structure, build script and Jenkins step will be created. (e.g. select "lambda" if you need to create zip packages for AWS Lambda functions).
-    multiselect: true
-    choices:
-        - docker
-        - lambda
-
 _subdirectory: python-template
 
 _message_after_copy: |

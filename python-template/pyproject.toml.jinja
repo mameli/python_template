@@ -37,16 +37,6 @@ native-tls = true # Use the system TLS library
 requires = ["uv_build>=0.8.11,<0.9.0"]
 build-backend = "uv_build"
 
-{% if 'lambda' in services_support -%}
-[tool.uv.workspace]
-members = [
-  "lambdas/*",
-]
-exclude = [
-  "**/__pycache__",
-]
-{%- endif %}
-
 [project.urls]
 "Homepage" = "https://github.com/{{github_username}}/{{project_slug}}"
 "Source" = "https://github.com/{{github_username}}/{{project_slug}}"
@@ -55,7 +45,6 @@ exclude = [
 testpaths = ["tests"]
 addopts = [
     "--cov=src/",
-    "--cov=lambdas/",
     "--cov-report=xml",
     "--cov-report=term-missing",
     "--junitxml=report.xml",
