@@ -20,7 +20,7 @@ If you have already installed `uv`, please ensure you're using the latest versio
 Launch the following command and answer carefully to the prompts:
 
 ```bash
-uvx copier copy https://github.com/filippo.mameli/python_uv_template.git .
+uvx copier copy https://github.com/mameli/python_template.git .
 ```
 
 > [!IMPORTANT]
@@ -29,12 +29,12 @@ uvx copier copy https://github.com/filippo.mameli/python_uv_template.git .
 #### 4. Setup and first push
 
 ```bash
-git init --initial-branch=master
+git init --initial-branch=main
 make install
 git add .
 git commit -m "feat: first commit"
 git remote add origin <remote_repository_URL>
-git push --set-upstream origin master
+git push --set-upstream origin main
 ```
 
 ## Project update

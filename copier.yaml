@@ -37,7 +37,7 @@ _message_after_copy: |
 
     1. Initialize the local directory as a Git repository, setup local environment, add files to version control and commit them:
 
-        git init --initial-branch=master
+        git init --initial-branch=main
         make install
         git add .
         git commit -m "feat: first commit"
@@ -52,7 +52,7 @@ _message_after_copy: |
 
     4. Now you can push your local files to GitHub.
 
-        git push --set-upstream origin master
+        git push --set-upstream origin main
 
 _message_after_update: |
     Your project "{{ project_slug }}" has been updated successfully!
