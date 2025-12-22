@@ -12,10 +12,14 @@ uv venv
 uv pip install pre-commit
 uv run pre-commit install || true
 
-PRE_COMMIT_ALLOW_NO_CONFIG=1 git commit -m "feat: Initial commit on docs branch" --no-verify
+# Create a dummy README.md to ensure there's something to commit
+echo "# Documentation" > README.md
+git add README.md
+
+PRE_COMMIT_ALLOW_NO_CONFIG=1 git commit -m "feat: Initial commit on docs branch" --no-verify --all
 
 # Push branch to remote
-git push -u origins gh-pages 
+git push -u origin gh-pages 
 
 # Return to original branch
 git switch "${current_branch}"

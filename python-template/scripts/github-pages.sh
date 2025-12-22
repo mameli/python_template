@@ -14,7 +14,7 @@ echo "List documentation versions..."
 uv run mike list
 
 echo "Deploying ${VERSION} as 'latest' version using mike..."
-uv run mike deploy --branch gh-pages --deploy-prefix public --push "${VERSION}" latest --update-aliases --alias-type=copy
+uv run mike deploy --branch gh-pages --push "${VERSION}" latest --update-aliases --alias-type=copy
 echo "Ensure default version is set to 'latest'..."
-uv run mike set-default --branch gh-pages --deploy-prefix public --push latest
+uv run mike set-default --branch gh-pages --push latest
 echo 'OK'
