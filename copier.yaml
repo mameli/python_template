@@ -27,7 +27,7 @@ _subdirectory: python-template
 _message_after_copy: |
     Your project "{{ project_slug }}" has been created successfully!
 
-    1. Initialize the local directory as a Git repository, setup local environment, add files to version control and commit them:
+    1. Initialize the local directory as a Git repository first (pre-commit hooks need it), then setup the local environment, add files to version control and commit them:
 
         git init --initial-branch=main
         make install
