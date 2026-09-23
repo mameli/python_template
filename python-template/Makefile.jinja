@@ -1,4 +1,4 @@
-.PHONY: *
+.PHONY: build chmod install format lint check init-docs github-pages github-tag print-version sync tests type-check docker-build
 
 # ==================================================================
 # careful, lines from here on must be indented with TABS, not SPACES
@@ -11,8 +11,14 @@ chmod:
 install: sync
 	uv run pre-commit install
 
+format: chmod
+	uv run ruff format ./src ./tests
+	uv run ruff check --fix ./src ./tests
+
 lint: chmod
 	@./scripts/lint.sh
+
+check: lint type-check tests
 
 init-docs: sync
 	@./scripts/init-docs.sh

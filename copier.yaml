@@ -31,6 +31,7 @@ _message_after_copy: |
 
         git init --initial-branch=main
         make install
+        make check
         git add .
         git commit -m "feat: first commit"
 

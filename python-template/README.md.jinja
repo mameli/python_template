@@ -32,9 +32,10 @@ cd {{project_slug}}
 ```
 
 
-### 4. Run initial setup
+### 3. Run initial setup
    ```bash
    make install
+   make check
    ```
 
 Congratulations! You're now ready to use your new project :sparkles:
@@ -59,7 +60,9 @@ After publishing, the documentation will be available at `https://{{ github_user
 
 - `build` — Runs `scripts/build.sh` to build the project.
 - `install` — Runs `sync` and installs pre-commit hooks.
+- `format` — Applies automatic formatting and safe lint fixes with [ruff](https://github.com/astral-sh/ruff).
 - `lint` — Runs `scripts/lint.sh` to lint the code with [ruff](https://github.com/astral-sh/ruff).
+- `check` — Runs linting, type-checking, and tests in sequence.
 - `init-docs` — Runs `scripts/init-docs.sh` to initialize documentation branch.
 - `github-pages` — Runs `scripts/github-pages.sh` to publish documentation to GitHub Pages.
 - `github-tag` — Runs `scripts/github-tag.sh` to create a GitHub tag.
