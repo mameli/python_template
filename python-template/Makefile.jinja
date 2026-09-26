@@ -12,8 +12,8 @@ install: sync
 	uv run pre-commit install
 
 format: chmod
-	uv run ruff format ./src ./tests
-	uv run ruff check --fix ./src ./tests
+	uv run ruff format ./src ./tests ./playground
+	uv run ruff check --fix ./src ./tests ./playground
 
 lint: chmod
 	@./scripts/lint.sh

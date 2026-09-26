@@ -54,6 +54,9 @@ uvx copier copy https://github.com/mameli/python_template.git .
 
 ### 4. Setup and first push
 
+> [!IMPORTANT]
+> `git init` must run before `make install` — `make install` installs pre-commit hooks, which require a Git repository.
+
 ```bash
 git init --initial-branch=main
 make install

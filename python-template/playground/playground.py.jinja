@@ -44,10 +44,11 @@ def _(hello):
 
 @app.cell
 def _():
-    import duckdb
     import random
-    import polars as pl
+
+    import duckdb
     import matplotlib.pyplot as plt
+    import polars as pl
     import seaborn as sns
 
     random.seed(0)  # reproducible results
@@ -191,9 +192,7 @@ def _(pl, sales_df):
             pl.col("revenue").mean().round(2).alias("avg_revenue"),
         )
         .with_columns(
-            (pl.col("total_revenue") / pl.col("total_units"))
-            .round(2)
-            .alias("revenue_per_unit"),
+            (pl.col("total_revenue") / pl.col("total_units")).round(2).alias("revenue_per_unit"),
             pl.col("total_revenue")
             .rank("dense", descending=True)
             .over("region")

@@ -2,42 +2,42 @@
 name = "{{project_slug}}"
 description = "{{project_description}}"
 readme = { file = "README.md", content-type = "text/markdown" }
-requires-python = ">=3.12,<3.14"
+requires-python = ">=3.12,<3.15"
 dependencies = []
 version = "0.1.0"
 
 [dependency-groups]
 dev = [
-    "commitizen==4.13.10",
-    "duckdb==1.5.1",
-    "importlib-metadata==9.0.0",
-    "mike==2.1.4",
+    "commitizen==4.19.0",
+    "duckdb==1.5.5",
+    "importlib-metadata==9.0.1",
+    "mike==2.2.0",
     "mkdocs-autorefs==1.4.4",
     "mkdocs-gen-files==0.6.1",
     "mkdocs-literate-nav==0.6.3",
-    "mkdocs-material==9.7.6",
-    "mkdocs-section-index==0.3.11",
-    "mkdocstrings[python]==1.0.3",
-    "pre-commit==4.5.1",
-    "pymdown-extensions==10.21.2",
+    "mkdocs-material==9.7.7",
+    "mkdocs-section-index==0.3.12",
+    "mkdocstrings[python]==1.0.6",
+    "pre-commit==4.6.2",
+    "pymdown-extensions==11.0.2",
     "pytest-cov==7.1.0",
-    "pytest==9.0.3",
-    "pyarrow==23.0.1",
-    "ruff==0.15.10",
-    "sqlglot==30.4.2",
-    "typing-extensions==4.15.0",
-    "marimo==0.23.1",
-    "polars==1.39.3",
+    "pytest==9.1.1",
+    "pyarrow==25.0.1",
+    "ruff==0.16.9",
+    "sqlglot==30.19.0",
+    "typing-extensions==4.16.0",
+    "marimo==0.25.0",
+    "polars==1.44.2",
     "seaborn==0.13.2",
-    "ty==0.0.29",
+    "ty==0.0.84",
 ]
 
 [tool.uv]
-required-version = ">=0.8.0"
-native-tls = true # Use the system TLS library
+required-version = ">=0.11.0"
+system-certs = true # Use the platform certificate store
 
 [build-system]
-requires = ["uv_build>=0.11.6,<0.12.0"]
+requires = ["uv_build>=0.12.18,<0.13.0"]
 build-backend = "uv_build"
 
 [project.urls]
@@ -65,6 +65,10 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# marimo renders a cell's trailing bare expression as its output
+"playground/*.py" = ["B018"]
 
 [tool.commitizen]
 version_provider = "uv"

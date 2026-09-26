@@ -11,7 +11,7 @@ This is a Python package laid out with a `src/`-based import path and supporting
 
 ## Build, Test, and Development Commands
 Use `uv` for dependency management and to run tools.
-- `make install` installs dev dependencies and pre-commit hooks.
+- `make install` installs dev dependencies and pre-commit hooks. Requires a Git repository (`git init` first in a fresh project).
 - `make sync` synchronizes dependencies via `scripts/sync.sh`.
 - `make format` applies Ruff formatting and safe lint fixes.
 - `make lint` runs Ruff linting.
@@ -43,5 +43,5 @@ Git history is not available in this workspace, so no existing commit convention
 - Add screenshots for documentation or UI-facing changes when relevant.
 
 ## Documentation & Configuration Notes
-- Python `>=3.12,<3.14` is required; `uv` `>=0.8.0` is expected.
+- Python `>=3.12,<3.15` is required; `uv` `>=0.11.0` is expected.
 - Documentation is generated from docstrings; keep public APIs documented.

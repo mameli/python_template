@@ -59,7 +59,7 @@ After publishing, the documentation will be available at `https://{{ github_user
 ## Makefile commands
 
 - `build` — Runs `scripts/build.sh` to build the project.
-- `install` — Runs `sync` and installs pre-commit hooks.
+- `install` — Runs `sync` and installs pre-commit hooks. Requires a Git repository (`git init` first in a fresh project).
 - `format` — Applies automatic formatting and safe lint fixes with [ruff](https://github.com/astral-sh/ruff).
 - `lint` — Runs `scripts/lint.sh` to lint the code with [ruff](https://github.com/astral-sh/ruff).
 - `check` — Runs linting, type-checking, and tests in sequence.

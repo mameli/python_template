@@ -3,6 +3,6 @@
 set -ex
 
 echo "--Checking code format--"
-uv run ruff format --check ./src ./tests
+uv run ruff format --check ./src ./tests ./playground
 echo "--Linting all sources--"
-uv run ruff check ./src ./tests
+uv run ruff check ./src ./tests ./playground
