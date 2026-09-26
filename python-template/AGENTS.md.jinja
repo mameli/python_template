@@ -13,7 +13,9 @@ This is a Python package laid out with a `src/`-based import path and supporting
 Use `uv` for dependency management and to run tools.
 - `make install` installs dev dependencies and pre-commit hooks.
 - `make sync` synchronizes dependencies via `scripts/sync.sh`.
+- `make format` applies Ruff formatting and safe lint fixes.
 - `make lint` runs Ruff linting.
+- `make check` runs linting, type-checking, and tests.
 - `make type-check` runs `ty` for type checking.
 - `make tests` runs `uv run pytest -v` and cleans `__pycache__` files.
 - `make build` runs the build script.
@@ -41,5 +43,5 @@ Git history is not available in this workspace, so no existing commit convention
 - Add screenshots for documentation or UI-facing changes when relevant.
 
 ## Documentation & Configuration Notes
-- Python `>=3.13` is required; `uv` `>=0.8.0` is expected.
+- Python `>=3.12,<3.14` is required; `uv` `>=0.8.0` is expected.
 - Documentation is generated from docstrings; keep public APIs documented.

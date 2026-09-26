@@ -6,7 +6,7 @@ If you want the full rationale and trade-offs behind this stack, read the compan
 
 ## Why this template
 - Start fast with a clean `src/` layout and starter modules.
-- Keep quality automated with linting, formatting, typing, and tests.
+- Keep quality automated with linting, formatting, typing, and tests (`make check`).
 - Use reproducible environments and lockfiles for reliable builds.
 - Publish docs and releases with built-in helper scripts and Make targets.
 
@@ -57,6 +57,7 @@ uvx copier copy https://github.com/mameli/python_template.git .
 ```bash
 git init --initial-branch=main
 make install
+make check
 git add .
 git commit -m "feat: first commit"
 git remote add origin <remote_repository_URL>
